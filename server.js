@@ -37,7 +37,7 @@ app.get('/search', (req, res) => {
             console.log(`Rank: ${rank.replace(/\s\s+/g, ' ').split('#').join('\n')}`)
             
             return res.render('search', {
-                asin: .params.asin,
+                asin: req.params.asin,
                 product: results,
             })
         })
