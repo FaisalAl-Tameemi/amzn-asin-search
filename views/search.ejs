@@ -8,8 +8,54 @@
     <link href="css/style.css" rel="stylesheet" />
   </head>
   <body>
-    <div class="s006">
-      <%- include _partials/_search_form.ejs %>
+    <div class="results s006">
+        <%- include _partials/_search_form.ejs %>
+        <table>
+            <tbody>
+                <tr>
+                    <th>
+                        Title
+                    </th>
+                    <td>
+                        <%= locals.product.title %>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        ASIN
+                    </th>
+                    <td>
+                        <%= locals.asin %>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Category
+                    </th>
+                    <td>
+                        <%= locals.product.category %>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Sales Rank
+                    </th>
+                    <td>
+                        <% locals.product.rank.forEach((rankEntry) => { %>
+                            <%= rankEntry %><br />
+                        <% }) %>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Dimensions
+                    </th>
+                    <td>
+                        <%= locals.product.dimensions %>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
   </body>
 </html>
