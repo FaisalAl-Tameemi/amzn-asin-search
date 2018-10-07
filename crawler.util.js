@@ -61,6 +61,13 @@ const parsePage = (url, selectorsMap) => {
         })
 }
 
+/**
+ * A generic function which requires an ASIN identifier to turn
+ * that into a URL to be fetched and crawled.
+ * 
+ * The contents of the page are then parsed to get basic information
+ * about the product.
+ */
 const searchAmazonByASIN = (asin, baseUrl = 'https://www.amazon.com/dp') => {
     if (!asin) {
         throw new Error('ASIN number is required for search')
@@ -71,11 +78,27 @@ const searchAmazonByASIN = (asin, baseUrl = 'https://www.amazon.com/dp') => {
     console.log(`Searching URL: ${searchUrl}`)
     
     return parsePage(searchUrl, {
-        'rank': '#prodDetails #SalesRank > td.value',
-        'dimensions': '#prodDetails tr.size-weight:nth-child(2) > td.value',
-        'price': '.priceblock_ourprice',
-        'category': 'span.cat-link'
-    })
+            'title': '#productTitle',
+            'rank': '#prodDetails #SalesRank > td.value, #SalesRank, td:contains("Best Sellers Rank") + td, li:contains("Best Sellers Rank"), th:contains("Best Sellers Rank") + td',
+            'dimensions': '#prodDetails tr.size-weight:nth-child(2) > td.value, li:contains("Product Dimensions"), th:contains("Dimensions") + td',
+            'price': '.priceblock_ourprice',
+            'category': 'span.cat-link, #wayfinding-breadcrumbs_feature_div'
+        })
+        .then((result) => {
+            result.rank = result.rank
+                .replace(/Amazon Best Sellers Rank:|\(.+\)/g, '')
+                .replace(/\s\s+/g, ' ')
+                .trim()
+                .split('#')
+                .filter(elm => elm.length !== 0)
+                .map(elm => elm.trim())
+
+            result.dimensions = result.dimensions
+                .replace(/P\w+ Dimensions:/g, '')
+                .trim()
+
+            return result
+        })
 }
 
 module.exports = {
