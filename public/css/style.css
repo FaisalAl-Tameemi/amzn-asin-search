@@ -819,7 +819,7 @@ html {
     -ms-flex-align: center;
         align-items: center;
     font-family: 'Poppins', sans-serif;
-    background: url("../images/Searchs_006.png");
+    background: #e67e22;
     background-size: cover;
     background-position: center center;
     padding: 15px;
@@ -949,4 +949,20 @@ html {
       height: 26px;
     }
   }
+
+  .results {
+    width: 100%;
+    min-height: 100vh;
+    font-family: 'Poppins', sans-serif;
+    padding: 15px;
+    flex-direction: column;
+  }
+
+  .results table {
+    display: block;
+    width: 70%;
+  }
   
+  .results table th + td {
+    padding: 20px;
+  }
