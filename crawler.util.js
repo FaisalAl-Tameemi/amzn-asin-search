@@ -1,6 +1,5 @@
 const Axios = require('axios')
 const Cheerio = require('cheerio')
-const AsyncPromise = require('async-as-promised')
 
 /**
  * A simple method to crawl a web page using Cheerio
@@ -62,6 +61,13 @@ const parsePage = (url, selectorsMap) => {
         })
 }
 
+/**
+ * A generic function which requires an ASIN identifier to turn
+ * that into a URL to be fetched and crawled.
+ * 
+ * The contents of the page are then parsed to get basic information
+ * about the product.
+ */
 const searchAmazonByASIN = (asin, baseUrl = 'https://www.amazon.com/dp') => {
     if (!asin) {
         throw new Error('ASIN number is required for search')
@@ -72,27 +78,31 @@ const searchAmazonByASIN = (asin, baseUrl = 'https://www.amazon.com/dp') => {
     console.log(`Searching URL: ${searchUrl}`)
     
     return parsePage(searchUrl, {
-        'rank': '#prodDetails #SalesRank > td.value',
-        'dimensions': '#prodDetails tr.size-weight:nth-child(2) > td.value',
-        'price': '.priceblock_ourprice',
-        'category': 'span.cat-link'
-    })
+            'title': '#productTitle',
+            'rank': '#prodDetails #SalesRank > td.value, #SalesRank, td:contains("Best Sellers Rank") + td, li:contains("Best Sellers Rank"), th:contains("Best Sellers Rank") + td',
+            'dimensions': '#prodDetails tr.size-weight:nth-child(2) > td.value, li:contains("Product Dimensions"), th:contains("Dimensions") + td',
+            'price': '.priceblock_ourprice',
+            'category': 'span.cat-link, #wayfinding-breadcrumbs_feature_div'
+        })
+        .then((result) => {
+            result.rank = result.rank
+                .replace(/Amazon Best Sellers Rank:|\(.+\)/g, '')
+                .replace(/\s\s+/g, ' ')
+                .trim()
+                .split('#')
+                .filter(elm => elm.length !== 0)
+                .map(elm => elm.trim())
+
+            result.dimensions = result.dimensions
+                .replace(/P\w+ Dimensions:/g, '')
+                .trim()
+
+            return result
+        })
 }
 
-
-// TODO: simply test, remove later
-const asinNumber = process.argv[2];
-const t1 = new Date().getTime()
-
-searchAmazonByASIN(asinNumber)
-    // .then((response) => {
-    //     console.log(response)
-    //     return response
-    // })
-    .then(({ dimensions, category, rank }) => {
-        console.log(`Dimensions: ${dimensions}`)
-        console.log(`Category: ${category}`)
-        console.log(`Rank: ${rank.replace(/\s\s+/g, ' ').split('#').join('\n')}`)
-        console.log(`\n\nDone in = ${new Date().getTime() - t1} milliseconds`)
-    })
-    .catch(console.error)
+module.exports = {
+    searchAmazonByASIN,
+    crawlPage,
+    parsePage,
+}
