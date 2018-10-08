@@ -9,6 +9,8 @@
 2. NodeJS (npm or yarn)
 3. ___(optional)___ Docker & Docker Compose
 
+### Running the App
+
 To run the app, simply make sure that all npm modules are installed with `yarn install` and then run the app in dev mode with `yarn run dev`.
 
 Alternatively, use npm with `npm install` and `node ./server.js`.
