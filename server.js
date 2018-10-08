@@ -2,12 +2,15 @@ const express = require('express')
 const expressPromise = require('express-promise')
 const bodyParser = require('body-parser')
 const compression = require('compression')
+const Redis = require('ioredis')
 
 const config = require('./config')
 const logger = require('./logger.util')
 const crawler = require('./crawler.util')
 
 const app = express()
+
+const redisClient = new Redis(6379, 'redis')
 
 app.set('view engine', 'ejs')
 
@@ -30,28 +33,33 @@ app.get('/search', (req, res) => {
         })
     }
 
-    // TODO: check if product has already been fetched before
-    return crawler
-        .searchAmazonByASIN(req.query.asin)
-        .then((results) => {
-            if (!results) {
-                console.log('No product found for given ASIN')
-                return res.render('search', {
-                    error: 'No product found',
-                    asin: req.query.asin
-                })
+    return redisClient
+        .get(req.query.asin)
+        .then((cachedResult) => {
+            if (cachedResult) {
+                return res.render('search', JSON.parse(cachedResult))
             }
 
-            const { dimensions, category, rank } = results
+            return crawler
+                .searchAmazonByASIN(req.query.asin)
+                .then((results) => {
+                    if (!results) {
+                        console.log('No product found for given ASIN')
+                        return res.render('search', {
+                            error: 'No product found',
+                            asin: req.query.asin
+                        })
+                    }
 
-            console.log(`Dimensions: ${dimensions}`)
-            console.log(`Category: ${category}`)
-            console.log(`Rank: ${rank}`)
-            
-            return res.render('search', {
-                asin: req.query.asin,
-                product: results,
-            })
+                    const data = {
+                        asin: req.query.asin,
+                        product: results,
+                    }
+                    
+                    return redisClient
+                        .set(data.asin, JSON.stringify(data))
+                        .then(() => res.render('search', data))
+                })
         })
         .catch((err) => {
             console.error(err)

@@ -1,0 +1,23 @@
+version: '2'
+services:
+
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - "6379:6379"
+
+  app:
+    image: "node:9"
+    depends_on:
+      - redis
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./:/home/node/app
+    ports:
+      - "3000:3000"
+    command: "yarn run dev"
+    links:
+      - redis
