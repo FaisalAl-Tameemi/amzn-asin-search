@@ -10,7 +10,7 @@ const crawler = require('./crawler.util')
 
 const app = express()
 
-const redisClient = new Redis(6379, 'redis')
+const redisClient = new Redis(config.redis.port, config.redis.host)
 
 app.set('view engine', 'ejs')
 
