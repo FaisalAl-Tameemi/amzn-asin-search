@@ -37,6 +37,11 @@ __Challenges__
 3. __Caching__ the results into a Redis instance is ok initially but will need to be replaced with a long-term storage solution such Postgres (more on this below).
 
 
+![](https://lh3.googleusercontent.com/setqDBlAMdMkhtFA0b6sj3SQ6U24P2UZ5f0DibypzuGJhBnbvaY32TL9u-oVEV6KArG0dbR-atBqJ3ZxfwIl=w1280-h701-rw)
+
+![](https://lh6.googleusercontent.com/mz6vvJgbXb5Tio_omwIHCulP7wYcx_ycBFPX86BcmoxpLlupuiPDcpIk7iRg_dw3WPB7DhM-CjghiFcZd_5O=w1280-h701-rw)
+
+
 ### Improved Approach
 
 This improved approach builds on the previous one but is more tuned for scalability. 
