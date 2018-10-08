@@ -1,6 +1,20 @@
 # Amazon ASIN Search
 
 
+## Getting Started
+
+### Dependencies
+
+1. Redis
+2. NodeJS (npm or yarn)
+3. ___(optional)___ Docker & Docker Compose
+
+To run the app, simply make sure that all npm modules are installed with `yarn install` and then run the app in dev mode with `yarn run dev`.
+
+Alternatively, use npm with `npm install` and `node ./server.js`.
+
+If you would like to use Docker, there is a docker compose file which will spin up the app and a Redis (no user/auth) instance along with it. The default configuration uses `redis` as a host path for the Redis instance, this named host comes from the docker-compose image name. Change `./config.js` if you would like to setup a different host for Redis.
+
 
 ## Architecture 
 
