@@ -81,7 +81,7 @@ In general terms, we can view the page for its actual content rather than how th
 ![](https://res.cloudinary.com/dh6ki76tn/image/upload/v1538982734/IMG_20181007_200737_987.jpg)
 
 
-__Yet Another Approach__
+### Yet Another Approach
 
 You could also create a scalable approach without introducing complexity of a Redis queue. If each client (front-end/browser) searches and parses the pages it's looking for then sends the results to the backend. You could arrive to the same result.
 
