@@ -15,8 +15,10 @@
     "ejs": "^2.6.1",
     "express": "^4.16.3",
     "express-promise": "^0.4.0",
+    "ioredis": "^4.0.0",
     "lodash": "^4.17.11",
     "node-yaml-config": "^0.0.4",
+    "redis": "^2.8.0",
     "winston": "^3.1.0"
   },
   "devDependencies": {
