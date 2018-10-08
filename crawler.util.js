@@ -79,14 +79,14 @@ const searchAmazonByASIN = (asin, baseUrl = 'https://www.amazon.com/dp') => {
     
     return parsePage(searchUrl, {
             'title': '#productTitle',
-            'rank': '#prodDetails #SalesRank > td.value, #SalesRank, td:contains("Best Sellers Rank") + td, li:contains("Best Sellers Rank"), th:contains("Best Sellers Rank") + td',
+            'rank': 'td:contains("Best Sellers Rank") + td, li:contains("Best Sellers Rank"), th:contains("Best Sellers Rank") + td',
             'dimensions': '#prodDetails tr.size-weight:nth-child(2) > td.value, li:contains("Product Dimensions"), th:contains("Dimensions") + td',
             'price': '.priceblock_ourprice',
             'category': 'span.cat-link, #wayfinding-breadcrumbs_feature_div'
         })
         .then((result) => {
             result.rank = result.rank
-                .replace(/Amazon Best Sellers Rank:|\(.+\)/g, '')
+                .replace(/Amazon Best Sellers Rank:|Best Sellers Rank|\(.+\)/g, '')
                 .replace(/\s\s+/g, ' ')
                 .trim()
                 .split('#')

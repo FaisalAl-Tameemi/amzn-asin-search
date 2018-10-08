@@ -17,7 +17,7 @@ const configs = {
   minTotalFreeShipping: 200,
 
   redis: {
-    host: process.env.REDIS_HOST || 'localhost',
+    host: process.env.REDIS_HOST || 'redis',
     port: process.env.REDIS_PORT || 6379,
     user: process.env.REDIS_USER,
     password: process.env.REDIS_PASSWORD,
