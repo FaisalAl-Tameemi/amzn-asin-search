@@ -75,7 +75,3 @@ In this way, the backend simply becomes a caching mechanism across the different
 
 ![](https://lh6.googleusercontent.com/Z7ZPbqcBpj0knBGmncHKOykhwHtde-v3USmpCiWtuspChpbUziMSzn7_2vkz8NkeuveqGGDN1Atz_SASIhXj=w1042-h668-rw)
 
-
-## Screenshots
-
-...
